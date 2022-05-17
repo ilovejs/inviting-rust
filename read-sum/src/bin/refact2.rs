@@ -1,11 +1,11 @@
 use std::env;
 use std::error::Error;
-use std::fs::File;
-use std::io::prelude::*;
-use std::process;
-use std::io;
-use std::num;
 use std::fmt;
+use std::fs::File;
+use std::io;
+use std::io::prelude::*;
+use std::num;
+use std::process;
 
 #[derive(Debug)]
 enum CliError {
@@ -30,7 +30,6 @@ impl Error for CliError {
         }
     }
 }
-
 impl From<io::Error> for CliError {
     fn from(err: io::Error) -> CliError {
         CliError::Io(err)
@@ -41,26 +40,31 @@ impl From<num::ParseIntError> for CliError {
         CliError::Parse(err)
     }
 }
-fn run(filename: &str) -> ParseResult<i32> {
-    let mut file = File::open(filename)?;
+
+fn run(filename: Option<String>) -> ParseResult<i32> {
+    let mut file = File::open(filename.unwrap())?;
 
     let mut contents = String::new();
     file.read_to_string(&mut contents)?;
     let mut sum = 0;
-    for c in contents.lines(){
+    for c in contents.lines() {
         let n: i32 = c.parse::<i32>()?;
         sum += n;
     }
     Ok(sum)
 }
-type ParseResult<i32> = Result<i32, CliError>;
 
-fn main() -> Result<(), CliError> {
-    let args: Vec<String> = env::args().collect();
-    let filename = &args[1];
-    println!("In file {}", filename);
+type ParseResult<I32> = Result<I32, CliError>;
 
-    run(filename)?;
-
-    Ok(())
+fn main() {
+    let filename = env::args().nth(1);
+    match run(filename) {
+        Ok(n) => {
+            println!("{:?}", n);
+        }
+        Err(e) => {
+            println!("main error: {}", e);
+            process::exit(1);
+        }
+    }
 }

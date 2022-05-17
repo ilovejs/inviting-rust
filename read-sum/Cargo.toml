@@ -9,3 +9,15 @@ edition = "2018"
 [dependencies]
 anyhow = "1.0.38"
 thiserror = "1.0.23"
+
+# https://doc.rust-lang.org/cargo/guide/project-layout.html
+[[bin]]
+name = "refact1"
+[[bin]]
+name = "refact2"
+[[bin]]
+name = "refact3"
+[[bin]]
+name = "refact4"
+[[bin]]
+name = "refact5"

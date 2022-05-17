@@ -5,9 +5,8 @@ use std::io::prelude::*;
 use std::io;
 use std::num;
 
-
-use thiserror::Error;
 use anyhow::{Context, Result};
+use thiserror::Error;
 
 #[derive(Error, Debug)]
 enum CliError {
@@ -17,20 +16,18 @@ enum CliError {
     Parse(#[from] num::ParseIntError),
 }
 
-
 fn run(filename: &str) -> Result<i32, anyhow::Error> {
     let mut file = File::open(filename).context(format!("unable to open '{}'", filename))?;
 
     let mut contents = String::new();
     file.read_to_string(&mut contents)?;
     let mut sum = 0;
-    for c in contents.lines(){
+    for c in contents.lines() {
         let n: i32 = c.parse::<i32>()?;
         sum += n;
     }
     Ok(sum)
 }
-
 
 fn main() -> Result<()> {
     let args: Vec<String> = env::args().collect();
