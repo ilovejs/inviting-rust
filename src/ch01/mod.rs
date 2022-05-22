@@ -4,6 +4,7 @@
 pub mod ctfe;
 pub mod expr;
 pub mod lexical;
+pub mod auto_ptr;
 
 /// # Examples
 ///
